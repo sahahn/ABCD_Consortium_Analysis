@@ -723,14 +723,16 @@ def load_subcort_perf_rely(task, contrast, corr_with):
 
     return subcort
    
-def make_plot(ax, title, means, labels, start=3, extra_start=0, up_to=1250,
-              sz=0, legend_loc='lower right', legend_columnspacing=None,
+def make_plot(ax, title, means, labels,
+              sz=0, legend_loc='lower right',
               legend_alpha=.8, low_val=.2,
               legend=True, x_lim=None, xlabel=True, yticks=None,
-              cspaces=0, sspaces=0, dotted=False, ylabel=True, stack=False):
+              cspaces=0, sspaces=0, dotted=False,
+              ylabel=True, stack=False, special=False):
     
     # Clean labels
     labels = [l.replace('_', ' ') for l in labels]
+    labels = [l.replace('vs.', '-') for l in labels]
     
     # Linewidth
     lw = 2
@@ -769,7 +771,7 @@ def make_plot(ax, title, means, labels, start=3, extra_start=0, up_to=1250,
             if dotted:
                 ax.plot(x, y, label=labels[i], lw=lw, color=color)
             else:
-                ax.plot(x, y, label=labels[i], lw=lw, color=color, dashes=[2,2])
+                ax.plot(x, y, label=labels[i], lw=lw, color=color, dashes=[2, 2])
     
     # Legend font size + loc params, change loc to dif. ints to get different default 
     # legend spots
@@ -782,11 +784,18 @@ def make_plot(ax, title, means, labels, start=3, extra_start=0, up_to=1250,
         
         # Plot legend in passed loc
         if len(means[0]) == 2:
-            ax.legend(fontsize=C_NAME_SIZE-sz, loc=legend_loc, ncol=ncol,
-                      framealpha=legend_alpha, columnspacing=legend_columnspacing)
+
+            if special:
+                ax.legend(fontsize=C_NAME_SIZE-sz, loc=legend_loc, ncol=ncol,
+                          framealpha=legend_alpha, columnspacing=0, numpoints=2,
+                          handletextpad=0, borderpad=.05)
+
+            else:
+                ax.legend(fontsize=C_NAME_SIZE-sz, loc=legend_loc, ncol=ncol,
+                          framealpha=legend_alpha)
+        
         else:
-            ax.legend(fontsize=C_NAME_SIZE-sz, loc=legend_loc,
-                      framealpha=legend_alpha, columnspacing=legend_columnspacing)
+            ax.legend(fontsize=C_NAME_SIZE-sz, loc=legend_loc, framealpha=legend_alpha)
     
     # Plot title
     ax.set_title(title, fontsize=TITLE_SIZE)

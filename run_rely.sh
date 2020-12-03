@@ -10,7 +10,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
 #SBATCH --cpus-per-task=8
-#SBATCH --array=1-100
+#SBATCH --array=1-2
 
 source /users/s/a/sahahn/.bashrc
 cd ${SLURM_SUBMIT_DIR}

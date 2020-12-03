@@ -1,26 +1,12 @@
 import sys
 from Rely import load_resid_data
-import nibabel as nib
 import numpy as np
 import os
 
 from info import (load_covars_df, proc_covars_func,
                   get_mask, get_template_path, contrasts)
+from helpers import get_cohens, fast_corr
 
-def get_cohens(data):
-
-    mean = np.mean(data, axis=0)
-    std = np.std(data, axis=0)
-    cohen = mean / std
-
-    return cohen
-
-def fast_corr(O, P):
-    
-    n = P.size
-    DO = O - (np.sum(O, 0) / np.double(n))
-    DP = P - (np.sum(P) / np.double(n))
-    return np.dot(DP, DO) / np.sqrt(np.sum(DO ** 2, 0) * np.sum(DP ** 2))
 
 # Process arguments
 task = str(sys.argv[1])
@@ -28,7 +14,7 @@ contrast = int(str(sys.argv[2]))
 is_cortical = bool(int(str(sys.argv[3])))
 
 # Load the covars df
-covars_df, perf_df = load_covars_df(task, return_perf=True, add_stratify=False)
+covars_df, perf_df = load_covars_df(task, return_perf=True)
 
 # De-MEAN!
 covars_df = proc_covars_func(covars_df)

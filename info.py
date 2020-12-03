@@ -34,6 +34,9 @@ performance_vars = {'MID': [],
                     'nBack': nback_performance_vars,
                     'SST': sst_performance_vars}
 
+# This dictionary defines the raw ordering in which contrasts
+# are stacked, e.g., for MID, the first (or 0 index'ed contrast) in referenced raw data
+# will be the 'Large_reward_antic' contrast
 all_labels = {
     'MID':
     ['Large_reward_antic',
@@ -116,9 +119,15 @@ TITLE_SIZE = 17
 C_NAME_SIZE = 16
 LABEL_SIZE = 12
 
-def load_covars_df(task, return_perf=False, add_stratify=False):
 
+def load_covars_df(task, return_perf=False):
+
+    # Read from correct loc
     df = pd.read_csv(covars_locs[task])
+
+    # Rename some columns
+    df = df.rename({'b_averaged_puberty' : 'averaged_puberty',
+                    'b_demo_highest_education_categories' : 'education'}, axis=1)
 
     # Set index to subject id w/o NDAR preprend
     df['src_subject_id'] = [c.replace('NDAR_', '') for c in df['src_subject_id']]
@@ -128,12 +137,7 @@ def load_covars_df(task, return_perf=False, add_stratify=False):
     perf_df = df[performance_vars[task]]
     df = df.drop(performance_vars[task], axis=1)
 
-    # Add stratify if requested
-    if add_stratify:
-        strat_by = ['sex'] + [col for col in df if col.startswith('mri_info_deviceserial')]
-        df['stratify'] = df[strat_by].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
-
-    # If task is sst
+    # If task is SST
     if task == 'SST':
         sst_extra = pd.read_csv('Release_3.0_SST_newcols.csv')
         sst_extra['src_subject_id'] = [c.replace('NDAR_', '') for c in sst_extra['src_subject_id']]
@@ -164,6 +168,13 @@ def load_covars_df(task, return_perf=False, add_stratify=False):
     else:
         return df
 
+
+def get_strat_series(df):
+
+    strat_by = ['sex'] + [col for col in df if col.startswith('mri_info_deviceserial')]
+    return df[strat_by].apply(lambda row: '_'.join(row.values.astype(str)), axis=1)
+
+
 def proc_covars_func(df):
 
     # Just de-mean all columns
@@ -180,7 +191,14 @@ def get_mask(task, contrast, is_cortical):
         n = 31870
         
     n_contrasts = len(all_labels[task])
-    contrast_name = contrasts[task][contrast]
+
+    # Can pass contrast as int or str
+    if isinstance(contrast, int):
+        contrast_name = contrasts[task][contrast]
+    else:
+        contrast_name = contrast
+    
+    # Find right int
     contrast_ind = all_labels[task].index(contrast_name)
 
     mask = np.zeros((n, 1, 1, n_contrasts))

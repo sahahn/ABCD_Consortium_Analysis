@@ -4,7 +4,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
-from info import load_covars_df, proc_covars_func, get_mask, get_template_path
+from info import (load_covars_df, proc_covars_func, get_mask, get_template_path, get_strat_series)
 
 # Process arguments
 task = str(sys.argv[1])
@@ -15,7 +15,10 @@ run = str(sys.argv[4])
 print('sys.argv=', sys.argv, flush=True)
 
 # Load the covars df and perf df
-covars_df, perf_df = load_covars_df(task, return_perf=True, add_stratify=True)
+covars_df, perf_df = load_covars_df(task, return_perf=True)
+
+# Get the strat series
+strat_series = get_strat_series(covars_df)
 
 # Generate the proper mask based off contrast + cortical vs. subcortical
 mask = get_mask(task, contrast, is_cortical)
@@ -38,7 +41,7 @@ for col in perf_df:
                 min_size=2, max_size=2500,
                 every=10, n_repeats=50,
                 thresh=None, n_jobs=8,
-                stratify='stratify',
+                stratify=strat_series,
                 verbose=1)
 
     # Save under corr rely output

@@ -172,7 +172,7 @@ def plot_nback1(plot=True):
               sz=6, legend_alpha=.5,
               legend_loc=(-.5,-.43),
               xlabel=None, x_lim=(-10, 2500),
-              cspaces=6, sspaces=4,
+              cspaces=5, sspaces=2,
               ylabel = 'Correlation for activation maps')
 
     # Plot performance rely
@@ -196,12 +196,6 @@ def plot_sst(plot=True):
     task = 'SST'
 
     figure = plt.figure(figsize=(20, 10))
-
-    # Top grid
-    #grid = gridspec.GridSpec(nrows=2, ncols=6,
-    #                        wspace=None, hspace=.1,
-    #                        width_ratios=[3.5,10,10,1,10,10],
-    #                        height_ratios=None)
 
     # Top grid
     grid = gridspec.GridSpec(nrows=2, ncols=6,
@@ -303,11 +297,6 @@ def plot_sst(plot=True):
                          threshold=None)
 
     # Plot reliability
-    #rely_grid = gridspec.GridSpecFromSubplotSpec(nrows=5, ncols=2,
-    #                                            subplot_spec = grid[:,4:],
-    #                                            hspace=0,
-    #                                            height_ratios=[.05, 1, .5, 1, .125],
-    #                                            width_ratios=[0.05, 1])
     rely_grid =\
         gridspec.GridSpecFromSubplotSpec(nrows=5, ncols=2,
                                          subplot_spec = grid[:,5],
@@ -320,40 +309,17 @@ def plot_sst(plot=True):
     cort_p_rely, subcort_p_rely =\
         load_perf_rely(task, contrasts, 'tfmri_sst_all_beh_total_meanrt')
 
-    # Plot activation rely - w/ legend
-    #rely1_ax = figure.add_subplot(rely_grid[1,1])
-    #make_plot(rely1_ax, 'e) Reproducibility',
-    #          list(zip(cort_rely, subcort_rely)),
-    #          contrasts,
-    #          sz=6, legend_alpha=.5,
-    #          legend_loc=(.033,-.3775),
-    #          xlabel=None, x_lim=(-10, 2500),
-    #          cspaces=12, sspaces=10,
-    #          ylabel='Correlation for activation maps')
-
-    # Plot performance rely
-    #rely2_ax = figure.add_subplot(rely_grid[3,1])
-    #make_plot(rely2_ax, '',
-    #          list(zip(cort_p_rely, subcort_p_rely)),
-    #          contrasts,
-    #          sz=6,
-    #          ylabel = 'Correlation for performance maps',
-    #          low_val=0,
-    #          yticks=[0, .1, .2, .3, .4, .5, .6, .7, 0.8, 0.9, 1.0],
-    #          x_lim=(-10, 2500),
-    #          legend=False)
-
-     # Plot base rely + legend
-    rely1_ax = figure.add_subplot(rely_grid[1,1])
+    # Plot base rely + legend
+    rely1_ax = figure.add_subplot(rely_grid[1, 1])
     make_plot(rely1_ax,
               'e) Reproducibility',
               list(zip(cort_rely, subcort_rely)),
               contrasts,
-              sz=6, legend_alpha=.5,
-              legend_loc=(-.8,-.43),
-              legend_columnspacing=1,
+              sz=7, legend_alpha=.5,
+              legend_loc=(-.66,-.4),
               xlabel=None, x_lim=(-10, 2500),
-              cspaces=12, sspaces=10,
+              cspaces=10, sspaces=8,
+              special=True,
               ylabel = 'Correlation for activation maps')
 
     # Plot performance rely
@@ -369,10 +335,7 @@ def plot_sst(plot=True):
               legend=False)
 
     # Save 
-    # 2 = -.6, .1
-    # 3 = -.7, .5
-    # 4 = -.8, 1
-    figure.savefig('Figures/sst4.png', bbox_inches='tight', dpi=500)
+    figure.savefig('Figures/sst.png', bbox_inches='tight', dpi=500)
     plt.close(figure)
 
 def plot_nback2(plot=True):
@@ -453,13 +416,13 @@ def plot_nback2(plot=True):
     colorbar_ax2.set_axis_off()
         
     add_collage_colorbar(figure=figure, ax=colorbar_ax2, smfs=smfs,
-                        vmax=vmax2, vmin=vmin2,
-                        multicollage=True,
-                        cbar_shrink=1,
-                        cbar_aspect=30,
-                        cbar_pad=0,
-                        cmap='seismic',
-                        threshold=.00000001)
+                         vmax=vmax2, vmin=vmin2,
+                         multicollage=True,
+                         cbar_shrink=1,
+                         cbar_aspect=30,
+                         cbar_pad=0,
+                         cmap='seismic',
+                         threshold=.00000001)
 
     # Add reliability plots
     bot_outer_grid = gridspec.GridSpecFromSubplotSpec(nrows=1, ncols=4,
@@ -475,7 +438,7 @@ def plot_nback2(plot=True):
               contrasts,
               sz=6, legend_alpha=.5, low_val=-.1,
               yticks = [0, .2, .4,  .6,  .8,  1.0],
-              x_lim=(-10, 2500), cspaces=7, sspaces=4,
+              x_lim=(-10, 2500), cspaces=3, sspaces=1,
               ylabel='Correlation for activation maps')
 
 
@@ -617,16 +580,16 @@ def plot_mid(plot=True):
               list(zip(cort_rely, subcort_rely)),
               contrasts,
               sz=6, legend_alpha=.5, low_val=-.2,
-              yticks = [0, .2, .4,  .6,  .8,  1.0],
-              x_lim=(-10, 2500), cspaces=14, sspaces=12)
+              yticks = [0, .2, .4, .6, .8, 1.0],
+              x_lim=(-10, 2500), cspaces=13, sspaces=11)
 
     figure.savefig('Figures/mid.png', dpi=500, bbox_inches='tight')
     plt.close(figure)
 
 
-#plot_nback1(plot=True)
-#plot_nback2(plot=True)
-#plot_mid(plot=True)
+plot_nback1(plot=True)
+plot_nback2(plot=True)
+plot_mid(plot=True)
 plot_sst(plot=True)
 
 
