@@ -110,7 +110,7 @@ def plot_corrs(task, corrs, to_corr):
         figure.clear()
         plt.close(figure)
 
-def load_raw_data(task, resid=False):
+def load_raw_data(task, resid=False, overlap_with=None):
 
     all_data = {}
 
@@ -121,6 +121,16 @@ def load_raw_data(task, resid=False):
     # Get covars df + de-mean
     covars = load_covars_df(task, return_perf=False)
     covars = proc_covars_func(covars)
+
+    # Overlap with one or more series
+    if overlap_with is not None:
+
+        if not isinstance(overlap_with, list):
+            overlap_with = [overlap_with]
+
+        for ow in overlap_with:
+            to_keep = np.intersect1d(covars.index, ow.index)
+            covars = covars.loc[to_keep]
 
     # For each contrast
     for contrast in contrasts[task]:
@@ -135,7 +145,7 @@ def load_raw_data(task, resid=False):
             # Load raw data
             subjects, data =\
                 load_resid_data(covars, contrast, tp, mask=mask,
-                                resid=resid, n_jobs=8, verbose=1)
+                                resid=resid, n_jobs=16, verbose=1)
             
             # Add to all_data dict
             app_name = '.subcortical'
@@ -237,12 +247,12 @@ def test_mid_extra_vars():
     noise.name = 'noise'
     noise.loc[noise.index] = np.random.normal(size=noise.shape)
 
-    # Load the resid MID data
-    resid_data, covars_df = load_raw_data('MID', resid=True)
-
     for to_corr in [bis_sum_modified, bas_reward_responsiveness,
                     bas_reward_responsiveness_modified,
                     bas_drive, bas_fun_seeking, noise]:
+        
+        # Load the resid MID data as overlapping with to_corr
+        resid_data, covars_df = load_raw_data('MID', resid=True, overlap_with=to_corr)
         
         # Set to matching index
         to_c = to_corr.loc[covars_df.index]
@@ -253,10 +263,10 @@ def test_mid_extra_vars():
             corrs[d] = fast_corr(resid_data[d], to_c)
         
         # Plot
-        plot_corrs('MID', corrs, to_corr)
+        plot_corrs('MID', corrs, to_corr.name)
         
-        # Save a bit of memory
-        del corrs
+        # Save memory
+        del corrs, resid_data, covars_df
 
 def load_dofs():
 
@@ -406,12 +416,13 @@ def run_combos():
 
     for task in contrasts:
         print(task)
-        
-        data, covars = load_raw_data(task)
+        data, covars = load_raw_data(task, overlap_with=[l_hand, m_hand,
+                                                         task_dofs[task],
+                                                         mean_motions[task]])
        
         # Get dof's but de-mean
         covars_dof = covars.copy()
-        covars_dof['dof'] = task_dofs['task'] - task_dofs['task'].mean()
+        covars_dof['dof'] = task_dofs[task] - task_dofs[task].mean()
 
         covars_hand = covars.copy()
         covars_hand['l_hand'] = l_hand
@@ -423,7 +434,7 @@ def run_combos():
 
         # All
         covars_all = covars.copy()
-        covars_all['dof'] = task_dofs['task'] - task_dofs['task'].mean()
+        covars_all['dof'] = task_dofs[task] - task_dofs[task].mean()
         covars_all['l_hand'] = l_hand
         covars_all['m_hand'] = m_hand
         covars_all['mot'] = mean_motions[task] - mean_motions[task].mean()
@@ -470,7 +481,8 @@ def run_combos():
         for n, c in zip(names[task], corr_with_alls[task]):
             print(n,c)
     
-run_correlations()
-test_mid_extra_vars()
-make_histograms()
+
+#run_correlations()
+#test_mid_extra_vars()
+#make_histograms()
 run_combos()
