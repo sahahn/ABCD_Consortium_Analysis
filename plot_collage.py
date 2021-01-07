@@ -8,6 +8,9 @@ import numpy as np
 import nilearn
 import nilearn.datasets
 
+import matplotlib
+matplotlib.rcParams['pdf.fonttype'] = 42
+matplotlib.rcParams['ps.fonttype'] = 42
 
 def plot_nback1(plot=True):
 
@@ -173,6 +176,7 @@ def plot_nback1(plot=True):
               legend_loc=(-.5,-.43),
               xlabel=None, x_lim=(-10, 2500),
               cspaces=5, sspaces=2,
+              yticks=[0, .1, .2, .3, .4, .5, .6, .7, 0.8, 0.9, 1.0],
               ylabel = 'Correlation for activation maps')
 
     # Plot performance rely
@@ -187,7 +191,8 @@ def plot_nback1(plot=True):
               x_lim=(-10, 2500),
               legend=False)
 
-    figure.savefig('Figures/nback1.png', bbox_inches='tight', dpi=500)
+    #figure.savefig('Figures/nback1.png', bbox_inches='tight', dpi=500)
+    figure.savefig('Figures/nback1.pdf', bbox_inches='tight', dpi=500, transparent=True)
     plt.close(figure)
 
 def plot_sst(plot=True):
@@ -320,6 +325,7 @@ def plot_sst(plot=True):
               xlabel=None, x_lim=(-10, 2500),
               cspaces=10, sspaces=8,
               special=True,
+              yticks=[0, .1, .2, .3, .4, .5, .6, .7, 0.8, 0.9, 1.0],
               ylabel = 'Correlation for activation maps')
 
     # Plot performance rely
@@ -335,7 +341,8 @@ def plot_sst(plot=True):
               legend=False)
 
     # Save 
-    figure.savefig('Figures/sst.png', bbox_inches='tight', dpi=500)
+    #figure.savefig('Figures/sst.png', bbox_inches='tight', dpi=500)
+    figure.savefig('Figures/sst.pdf', bbox_inches='tight', dpi=500, transparent=True)
     plt.close(figure)
 
 def plot_nback2(plot=True):
@@ -488,7 +495,8 @@ def plot_nback2(plot=True):
     t_ax.set_axis_off()
 
     # Save
-    figure.savefig('Figures/nback2.png', dpi=500, bbox_inches='tight')
+    #figure.savefig('Figures/nback2.png', dpi=500, bbox_inches='tight')
+    figure.savefig('Figures/nback2.pdf', bbox_inches='tight', dpi=500, transparent=True)
     plt.close(figure)
 
 def plot_mid(plot=True):
@@ -583,7 +591,8 @@ def plot_mid(plot=True):
               yticks = [0, .2, .4, .6, .8, 1.0],
               x_lim=(-10, 2500), cspaces=13, sspaces=11)
 
-    figure.savefig('Figures/mid.png', dpi=500, bbox_inches='tight')
+    #figure.savefig('Figures/mid.png', dpi=500, bbox_inches='tight')
+    figure.savefig('Figures/mid.pdf', bbox_inches='tight', dpi=500, transparent=True)
     plt.close(figure)
 
 
