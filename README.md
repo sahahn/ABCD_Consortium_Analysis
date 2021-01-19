@@ -20,8 +20,4 @@ Breakdown of different files:
 
 
 
-
-
-
-
 A note on the csv's with co-variates referenced within these scripts. Due to a combination of factors, we reference pre-generated csv's with the covairates and subsetting 'valid' subjects for each task. This process of generating "valid" subjects included a number of different steps, e.g., missing datat, qc on imaging data, problems with data from some scanners, etc... and likewise different steps were conducted by multiple analysist's (which makes collecting all of the code used here difficult). These csv's include additionally the performance variables if any for that task. Note also that any categorical variables within these csv's have been already dummy coded, but NOT yet de-meaned. De-meaning for all variables is taken care of in different steps of the provided scripts here. Lastly, we apologize for not being able to make all of the steps from raw data to referenced csv's with co-variates avaliable at this time.

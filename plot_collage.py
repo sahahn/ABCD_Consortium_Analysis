@@ -177,7 +177,7 @@ def plot_nback1(plot=True):
               xlabel=None, x_lim=(-10, 2500),
               cspaces=5, sspaces=2,
               yticks=[0, .1, .2, .3, .4, .5, .6, .7, 0.8, 0.9, 1.0],
-              ylabel = 'Correlation for activation maps')
+              ylabel='Correlation for activation maps')
 
     # Plot performance rely
     rely2_ax = figure.add_subplot(rely_grid[3,1])
@@ -192,7 +192,7 @@ def plot_nback1(plot=True):
               legend=False)
 
     #figure.savefig('Figures/nback1.png', bbox_inches='tight', dpi=500)
-    figure.savefig('Figures/nback1.pdf', bbox_inches='tight', dpi=500, transparent=True)
+    figure.savefig('Figures/nback1.tiff', bbox_inches='tight', dpi=500, transparent=False)
     plt.close(figure)
 
 def plot_sst(plot=True):
@@ -342,7 +342,7 @@ def plot_sst(plot=True):
 
     # Save 
     #figure.savefig('Figures/sst.png', bbox_inches='tight', dpi=500)
-    figure.savefig('Figures/sst.pdf', bbox_inches='tight', dpi=500, transparent=True)
+    figure.savefig('Figures/sst.tiff', bbox_inches='tight', dpi=500, transparent=False)
     plt.close(figure)
 
 def plot_nback2(plot=True):
@@ -496,7 +496,7 @@ def plot_nback2(plot=True):
 
     # Save
     #figure.savefig('Figures/nback2.png', dpi=500, bbox_inches='tight')
-    figure.savefig('Figures/nback2.pdf', bbox_inches='tight', dpi=500, transparent=True)
+    figure.savefig('Figures/nback2.tiff', bbox_inches='tight', dpi=500, transparent=False)
     plt.close(figure)
 
 def plot_mid(plot=True):
@@ -592,7 +592,7 @@ def plot_mid(plot=True):
               x_lim=(-10, 2500), cspaces=13, sspaces=11)
 
     #figure.savefig('Figures/mid.png', dpi=500, bbox_inches='tight')
-    figure.savefig('Figures/mid.pdf', bbox_inches='tight', dpi=500, transparent=True)
+    figure.savefig('Figures/mid.tiff', bbox_inches='tight', dpi=500, transparent=False)
     plt.close(figure)
 
 
